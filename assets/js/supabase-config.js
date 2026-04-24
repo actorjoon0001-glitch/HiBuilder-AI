@@ -1,6 +1,7 @@
-// !! 실제 값은 여기에 채워 주세요. 이 파일은 .gitignore 되어 있습니다.
-// 값을 비워두면 localStorage fallback 으로 동작합니다.
+// Supabase 연결 설정 - publishable key 는 클라이언트 공개용이라 커밋 안전.
+// 실제 보안은 schema.sql 에서 설정한 RLS 정책이 담당합니다.
+// ⚠ service_role / sb_secret_* 키는 절대 여기 넣지 마세요!
 window.SUPABASE_CONFIG = {
-  url:     "",
-  anonKey: ""
+  url:     "https://mnfehgyaypdywoxskope.supabase.co",
+  anonKey: "sb_publishable_fyAu0mfoYxBvBViWCFutrQ_I3ol6LPs"
 };
