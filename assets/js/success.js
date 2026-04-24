@@ -24,6 +24,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!resp.ok || data.status !== 'paid') {
         return renderError(root, course, data.error || '결제 승인에 실패했습니다.');
       }
+      // 결제 완료된 이메일을 '인증 이메일'로 저장 → 수강 페이지에서 자동 인증
+      const order = OrderStore.last();
+      if (order?.email) {
+        localStorage.setItem('verified_email', order.email);
+      }
       renderSuccess(root, course, { orderId, amount, method: data.method });
     } catch (err) {
       console.error(err);
@@ -67,7 +72,7 @@ function renderSuccess(root, course, info) {
             </div>
           </div>
         ` : ''}
-        <a href="course.html?id=${course ? course.id : ''}" class="btn btn-primary btn-lg">강의 바로 수강하기</a>
+        <a href="lecture.html?id=${course ? course.id : ''}" class="btn btn-primary btn-lg">강의 바로 수강하기</a>
         <a href="index.html" class="btn btn-ghost btn-lg" style="margin-top:8px">홈으로 돌아가기</a>
       </div>
     </div>

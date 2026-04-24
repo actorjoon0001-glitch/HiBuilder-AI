@@ -1,4 +1,9 @@
 // 강의 데이터 - 새 강의를 추가하려면 courses 배열에 객체를 추가하세요.
+//
+// 각 lecture 의 videoId 는 YouTube 일부공개/공개 영상 ID 입니다.
+// 예) https://www.youtube.com/watch?v=XXXXXXXXXXX  → videoId: "XXXXXXXXXXX"
+// 모든 lecture 의 videoId 를 실제 강의 영상 ID 로 교체해 주세요.
+// Vimeo·Bunny.net 등으로 교체 시 lecture.js 의 플레이어 부분만 수정하면 됩니다.
 window.COURSES = [
   {
     id: "ai-booking-form",
@@ -27,42 +32,42 @@ AI와 노코드 도구만으로 <b>방문예약 접수 → 일정 확정 → 리
       {
         section: "1부. 왜 지금 AI 예약 자동화인가",
         lectures: [
-          { title: "오리엔테이션 & 완성 결과물 미리보기", time: "08:12", preview: true },
-          { title: "예약 업무에서 새는 시간과 돈 진단하기", time: "12:30" },
-          { title: "자동화로 얻게 되는 3가지 효과", time: "09:48" }
+          { title: "오리엔테이션 & 완성 결과물 미리보기", time: "08:12", preview: true, videoId: "jNQXAC9IVRw" },
+          { title: "예약 업무에서 새는 시간과 돈 진단하기", time: "12:30", videoId: "jNQXAC9IVRw" },
+          { title: "자동화로 얻게 되는 3가지 효과", time: "09:48", videoId: "jNQXAC9IVRw" }
         ]
       },
       {
         section: "2부. 도구 준비 (구글폼 · Apps Script · ChatGPT)",
         lectures: [
-          { title: "구글 계정/스프레드시트 세팅", time: "10:05" },
-          { title: "ChatGPT 프롬프트 작성 공식", time: "14:21", preview: true },
-          { title: "Apps Script 기본 문법 10분 완성", time: "11:50" }
+          { title: "구글 계정/스프레드시트 세팅", time: "10:05", videoId: "jNQXAC9IVRw" },
+          { title: "ChatGPT 프롬프트 작성 공식", time: "14:21", preview: true, videoId: "jNQXAC9IVRw" },
+          { title: "Apps Script 기본 문법 10분 완성", time: "11:50", videoId: "jNQXAC9IVRw" }
         ]
       },
       {
         section: "3부. 예약폼 만들기 실습",
         lectures: [
-          { title: "업종별 예약폼 필드 설계", time: "13:40" },
-          { title: "조건부 로직으로 똑똑한 폼 만들기", time: "16:22" },
-          { title: "모바일 반응형 디자인 적용", time: "09:30" }
+          { title: "업종별 예약폼 필드 설계", time: "13:40", videoId: "jNQXAC9IVRw" },
+          { title: "조건부 로직으로 똑똑한 폼 만들기", time: "16:22", videoId: "jNQXAC9IVRw" },
+          { title: "모바일 반응형 디자인 적용", time: "09:30", videoId: "jNQXAC9IVRw" }
         ]
       },
       {
         section: "4부. 자동화 파이프라인 구축",
         lectures: [
-          { title: "예약 접수 → 스프레드시트 자동 저장", time: "15:10" },
-          { title: "ChatGPT로 예약 확인 메시지 자동 생성", time: "17:55" },
-          { title: "카카오 알림톡 API 연동", time: "20:12" },
-          { title: "리마인드 & 노쇼 방지 시퀀스", time: "14:02" }
+          { title: "예약 접수 → 스프레드시트 자동 저장", time: "15:10", videoId: "jNQXAC9IVRw" },
+          { title: "ChatGPT로 예약 확인 메시지 자동 생성", time: "17:55", videoId: "jNQXAC9IVRw" },
+          { title: "카카오 알림톡 API 연동", time: "20:12", videoId: "jNQXAC9IVRw" },
+          { title: "리마인드 & 노쇼 방지 시퀀스", time: "14:02", videoId: "jNQXAC9IVRw" }
         ]
       },
       {
         section: "5부. 운영 & 성과 측정",
         lectures: [
-          { title: "예약 데이터 대시보드 만들기", time: "13:25" },
-          { title: "월 리포트 자동 생성하기", time: "10:08" },
-          { title: "4개 업종 템플릿 배포 & 커스터마이징", time: "22:17" }
+          { title: "예약 데이터 대시보드 만들기", time: "13:25", videoId: "jNQXAC9IVRw" },
+          { title: "월 리포트 자동 생성하기", time: "10:08", videoId: "jNQXAC9IVRw" },
+          { title: "4개 업종 템플릿 배포 & 커스터마이징", time: "22:17", videoId: "jNQXAC9IVRw" }
         ]
       }
     ],
@@ -103,15 +108,15 @@ AI와 노코드 도구만으로 <b>방문예약 접수 → 일정 확정 → 리
       {
         section: "1부. 상담봇 기획",
         lectures: [
-          { title: "오리엔테이션", time: "06:30", preview: true },
-          { title: "FAQ 수집과 정리", time: "12:08" }
+          { title: "오리엔테이션", time: "06:30", preview: true, videoId: "jNQXAC9IVRw" },
+          { title: "FAQ 수집과 정리", time: "12:08", videoId: "jNQXAC9IVRw" }
         ]
       },
       {
         section: "2부. 챗봇 구축 실습",
         lectures: [
-          { title: "채널톡 연동", time: "15:22" },
-          { title: "ChatGPT 프롬프트 설계", time: "18:41" }
+          { title: "채널톡 연동", time: "15:22", videoId: "jNQXAC9IVRw" },
+          { title: "ChatGPT 프롬프트 설계", time: "18:41", videoId: "jNQXAC9IVRw" }
         ]
       }
     ],
@@ -149,8 +154,8 @@ AI와 노코드 도구만으로 <b>방문예약 접수 → 일정 확정 → 리
       {
         section: "1부. AI 콘텐츠 공장 만들기",
         lectures: [
-          { title: "오리엔테이션 & 결과물", time: "07:45", preview: true },
-          { title: "브랜드 프롬프트 설계", time: "13:10" }
+          { title: "오리엔테이션 & 결과물", time: "07:45", preview: true, videoId: "jNQXAC9IVRw" },
+          { title: "브랜드 프롬프트 설계", time: "13:10", videoId: "jNQXAC9IVRw" }
         ]
       }
     ],
