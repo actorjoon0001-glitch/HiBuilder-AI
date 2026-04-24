@@ -29,6 +29,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (order?.email) {
         localStorage.setItem('verified_email', order.email);
       }
+      if (typeof window.track === 'function') {
+        window.track('Purchase', {
+          value:    Number(amount),
+          currency: 'KRW',
+          transaction_id: orderId,
+          items: course ? [{ id: course.id, name: course.title, price: course.price }] : []
+        });
+      }
       renderSuccess(root, course, { orderId, amount, method: data.method });
     } catch (err) {
       console.error(err);

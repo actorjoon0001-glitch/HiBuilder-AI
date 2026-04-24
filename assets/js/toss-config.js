@@ -7,6 +7,7 @@
 //   - Client Key (test_gck_... / live_gck_...) → 이 파일에 넣기 (공개 가능)
 //   - Secret Key (test_gsk_... / live_gsk_...) → Netlify 환경변수 TOSS_SECRET_KEY (절대 여기 금지!)
 window.TOSS_CONFIG = {
-  // 테스트 키 - 실결제 안 됨 (토스 공식 문서 예시 키)
+  // 테스트 키 - 실결제 안 됨 (토스 공식 문서 공용 키)
+  // 결제위젯 연동 키 심사 통과 후 본인 test_gck_... / live_gck_... 로 교체
   clientKey: "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"
 };
