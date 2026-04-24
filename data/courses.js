@@ -168,6 +168,78 @@ AI와 노코드 도구만으로 <b>방문예약 접수 → 일정 확정 → 리
     faqs: [
       { q: "유료 AI 도구가 꼭 필요한가요?", a: "대부분 무료로 실습 가능하며, 유료 도구는 옵션입니다." }
     ]
+  },
+  {
+    id: "ai-blog-income",
+    slug: "ai-blog-income",
+    title: "ChatGPT로 만드는 AI 블로그 수익화",
+    subtitle: "글쓰기 재능 없어도 OK. 네이버·티스토리에서 월 100만원 파이프라인 세팅",
+    thumbnail: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80",
+    price: 59000,
+    originalPrice: 119000,
+    discountLabel: "런칭 특가 -50%",
+    rating: 4.8,
+    students: 1204,
+    duration: "총 3시간 48분 · 22개 강의",
+    level: "입문",
+    tags: ["블로그", "AI글쓰기", "수익화", "SEO"],
+    highlights: [
+      "ChatGPT + Claude 로 주제별 SEO 블로그 글 하루 10개 양산",
+      "네이버 검색 상위 노출 프롬프트 템플릿 12종 제공",
+      "애드포스트·쿠팡파트너스·제휴 마케팅으로 수익 다각화",
+      "직접 운영 중인 월 120만원 블로그 사례 대공개"
+    ],
+    description: `글 한 편 쓰는 데 3시간씩 걸려 블로그 운영을 포기한 분, 수익화는커녕 방문자도 안 나오는 분을 위한 실전 강의입니다.
+AI 도구와 키워드 전략을 조합해 <b>주 1회 관리로 월 100만원 파이프라인</b>을 구축하는 법을 단계별로 알려드립니다.
+수강 후에는 블로그 한 개를 즉시 수익 구조로 돌릴 수 있는 템플릿 세트를 갖게 됩니다.`,
+    curriculum: [
+      {
+        section: "1부. 수익 나는 블로그의 구조",
+        lectures: [
+          { title: "오리엔테이션 & 수익 구조 3가지", time: "09:20", preview: true, videoId: "jNQXAC9IVRw" },
+          { title: "플랫폼 선택: 네이버 vs 티스토리 vs 워드프레스", time: "14:05", videoId: "jNQXAC9IVRw" },
+          { title: "수익형 니치 찾는 법 (Google Trends · 키워드 도구)", time: "16:40", videoId: "jNQXAC9IVRw" }
+        ]
+      },
+      {
+        section: "2부. AI 콘텐츠 양산 파이프라인",
+        lectures: [
+          { title: "ChatGPT 블로그 글쓰기 프롬프트 공식", time: "18:12", preview: true, videoId: "jNQXAC9IVRw" },
+          { title: "Claude 로 장문 리뷰글 생성하기", time: "15:50", videoId: "jNQXAC9IVRw" },
+          { title: "1개 주제 → 5개 글로 확장하기", time: "13:25", videoId: "jNQXAC9IVRw" },
+          { title: "AI 티 안 나게 리라이팅하는 법", time: "11:08", videoId: "jNQXAC9IVRw" }
+        ]
+      },
+      {
+        section: "3부. SEO 최적화 & 상위 노출",
+        lectures: [
+          { title: "네이버 SEO 로직 이해하기", time: "12:30", videoId: "jNQXAC9IVRw" },
+          { title: "제목·소제목 키워드 배치 공식", time: "10:45", videoId: "jNQXAC9IVRw" },
+          { title: "체류시간 늘리는 본문 구조", time: "09:55", videoId: "jNQXAC9IVRw" }
+        ]
+      },
+      {
+        section: "4부. 수익화 연결하기",
+        lectures: [
+          { title: "애드포스트·애드센스 승인 전략", time: "13:18", videoId: "jNQXAC9IVRw" },
+          { title: "쿠팡파트너스 링크 자연스럽게 녹이기", time: "15:22", videoId: "jNQXAC9IVRw" },
+          { title: "제휴 마케팅 상위 제휴사 10곳", time: "11:40", videoId: "jNQXAC9IVRw" },
+          { title: "월 100만원 수익 자동화 실제 사례", time: "19:05", videoId: "jNQXAC9IVRw" }
+        ]
+      }
+    ],
+    instructor: {
+      name: "박시연",
+      title: "AI 콘텐츠 에디터 · 블로그 월 120만원 운영 중",
+      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&q=80",
+      bio: "전직 출판사 에디터 출신. 2년 전부터 AI 도구로 블로그 5개를 동시 운영하며 월 평균 120만원 수익을 내고 있습니다. 글쓰기 재능보다 시스템이 중요하다는 걸 증명 중."
+    },
+    faqs: [
+      { q: "정말 글재주 없어도 돼요?", a: "네. 강의 중반까지는 프롬프트 복사-붙여넣기만으로 완성됩니다. 본인 말투 반영은 후반부에 배웁니다." },
+      { q: "네이버 블로그 초보도 할 수 있나요?", a: "네. 블로그 개설부터 첫 글 발행까지 포함돼 있어요." },
+      { q: "월 100만원은 실제로 가능한가요?", a: "꾸준히 주 3회 이상 발행한다는 전제하에 평균 6~12개월 걸립니다. 강의는 시스템을 만들어 드리고, 결과는 실행 빈도에 비례합니다." },
+      { q: "환불 가능한가요?", a: "구매 후 7일 이내 전체의 10% 미만 수강 시 100% 환불됩니다." }
+    ]
   }
 ];
 
@@ -184,5 +256,10 @@ window.SEED_REVIEWS = {
   ],
   "ai-marketing-auto": [
     { name: "정수영", rating: 5, date: "2026-03-05", text: "블로그 30개 진짜로 하루 만에 썼어요. 구독자 늘어나는 게 보입니다.", verified: true }
+  ],
+  "ai-blog-income": [
+    { name: "한지민", rating: 5, date: "2026-03-22", text: "강의 듣고 3개월 만에 월 35만원 달성했어요. 첫 수익 찍혔을 때 정말 짜릿했습니다.", verified: true },
+    { name: "윤재호", rating: 5, date: "2026-03-08", text: "프롬프트 공식이 진짜 황금이에요. 하루 3개씩 글 쓰는데 방문자가 꾸준히 올라가고 있어요.", verified: true },
+    { name: "이서영", rating: 4, date: "2026-02-19", text: "네이버 SEO 파트가 특히 도움됐어요. 다만 애드센스 승인은 제 노력도 좀 필요하더라구요 ㅎㅎ", verified: true }
   ]
 };
