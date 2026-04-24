@@ -1,0 +1,37 @@
+# HiBuilder Course Marketplace - Netlify 배포 설정
+
+[build]
+  # 빌드 과정이 없는 정적 사이트 - 프로젝트 루트 그대로 퍼블리시
+  publish = "."
+
+# 보안 헤더
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options           = "SAMEORIGIN"
+    X-Content-Type-Options    = "nosniff"
+    Referrer-Policy           = "strict-origin-when-cross-origin"
+    Permissions-Policy        = "camera=(), microphone=(), geolocation=()"
+
+# HTML은 짧게 캐시 (변경 사항 빠르게 반영)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# 정적 에셋은 길게 캐시
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# 깔끔한 URL: /course/<id> → /course.html?id=<id>
+[[redirects]]
+  from   = "/course/:id"
+  to     = "/course.html?id=:id"
+  status = 200
+
+[[redirects]]
+  from   = "/checkout/:id"
+  to     = "/checkout.html?id=:id"
+  status = 200

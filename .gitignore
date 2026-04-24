@@ -7,5 +7,6 @@ dist/
 .env
 .env.local
 
-# Supabase 키 (로컬 전용)
-assets/js/supabase-config.js
+# Supabase anon key는 공개용이라 커밋해도 안전합니다 (service_role 키만 절대 금지!)
+# 그래도 로컬에서만 쓰고 싶다면 아래 주석을 해제하세요.
+# assets/js/supabase-config.js
