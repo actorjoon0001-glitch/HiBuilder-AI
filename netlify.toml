@@ -3,6 +3,10 @@
 [build]
   # 빌드 과정이 없는 정적 사이트 - 프로젝트 루트 그대로 퍼블리시
   publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
 
 # 보안 헤더
 [[headers]]
