@@ -53,10 +53,10 @@ function renderFooter() {
       <div class="container">
         <div>
           <a href="index.html">회사소개</a>
-          <a href="#">이용약관</a>
-          <a href="#">개인정보처리방침</a>
-          <a href="#">환불정책</a>
-          <a href="#">고객센터</a>
+          <a href="terms.html">이용약관</a>
+          <a href="privacy.html"><b style="color:#e2e8f0">개인정보처리방침</b></a>
+          <a href="refund.html">환불정책</a>
+          <a href="mailto:harold0001@naver.com">고객센터</a>
         </div>
         <div class="biz">
           상호 <b style="color:#cbd5e1">루밍홈</b> · 대표 이상준 · 사업자등록번호 474-23-01704<br/>

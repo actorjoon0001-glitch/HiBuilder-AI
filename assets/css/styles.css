@@ -801,6 +801,73 @@ body {
   font-weight: 900;
 }
 
+/* Legal pages (이용약관/개인정보처리방침/환불정책) */
+.legal-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+.legal-page h1 {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+.legal-page .updated {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 36px;
+}
+.legal-page h2 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 32px 0 10px;
+  letter-spacing: -0.01em;
+}
+.legal-page h3 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 20px 0 6px;
+}
+.legal-page p { margin: 8px 0; }
+.legal-page ol, .legal-page ul {
+  padding-left: 20px;
+  margin: 8px 0 12px;
+}
+.legal-page ol li, .legal-page ul li { margin: 4px 0; }
+.legal-page table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 14px;
+}
+.legal-page th, .legal-page td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.legal-page th {
+  background: var(--bg);
+  font-weight: 700;
+  color: var(--ink);
+}
+.legal-page .info-box {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin: 16px 0;
+  font-size: 14.5px;
+  color: var(--ink-2);
+}
+
 /* Utility */
 .muted { color: var(--muted); }
 .text-center { text-align: center; }
