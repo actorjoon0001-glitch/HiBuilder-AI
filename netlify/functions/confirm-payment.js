@@ -12,6 +12,11 @@
 //   TOSS_SECRET_KEY                 (테스트: test_gsk_... / 라이브: live_gsk_...)
 //   SUPABASE_URL                    (예: https://xxx.supabase.co)
 //   SUPABASE_SERVICE_ROLE_KEY       (service_role 키 · 절대 프론트 노출 금지)
+//
+// 선택 환경변수 (텔레그램 결제 알림):
+//   TELEGRAM_BOT_TOKEN              (BotFather 에서 발급)
+//   TELEGRAM_CHAT_ID                (userinfobot 에서 확인)
+//   두 값이 모두 있으면 결제 성공 시 텔레그램 메시지 자동 발송
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
@@ -51,7 +56,7 @@ exports.handler = async (event) => {
 
   // 1) 주문 조회: 금액 검증 + 중복 승인 방지
   const orderRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/orders?order_no=eq.${encodeURIComponent(orderId)}&select=price,status`,
+    `${SUPABASE_URL}/rest/v1/orders?order_no=eq.${encodeURIComponent(orderId)}&select=price,status,course_title,name,email`,
     {
       headers: {
         apikey: SUPABASE_SERVICE_ROLE_KEY,
@@ -113,6 +118,17 @@ exports.handler = async (event) => {
     });
   }
 
+  // 4) 텔레그램 결제 알림 (선택 · 실패해도 결제 응답엔 영향 없음)
+  await sendTelegramPaymentAlert({
+    orderId,
+    amount,
+    method: tossData.method,
+    courseTitle: order.course_title,
+    buyerName:   order.name,
+    buyerEmail:  order.email,
+    approvedAt:  tossData.approvedAt
+  }).catch(err => console.warn('[telegram] 알림 발송 실패 (결제는 정상):', err?.message || err));
+
   return res(200, {
     status: 'paid',
     orderId,
@@ -121,3 +137,40 @@ exports.handler = async (event) => {
     approvedAt: tossData.approvedAt
   });
 };
+
+async function sendTelegramPaymentAlert(order) {
+  const token  = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return;
+
+  const amountFmt = new Intl.NumberFormat('ko-KR').format(order.amount) + '원';
+  const when = order.approvedAt
+    ? new Date(order.approvedAt).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
+    : new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+
+  const text = [
+    '💳 *결제 완료*',
+    '━━━━━━━━━━━━━━',
+    order.courseTitle ? `📘 ${order.courseTitle}` : null,
+    order.buyerName  ? `👤 ${order.buyerName}` : null,
+    order.buyerEmail ? `📧 ${order.buyerEmail}` : null,
+    `💰 ${amountFmt}${order.method ? ` · ${order.method}` : ''}`,
+    `🧾 ${order.orderId}`,
+    `🕐 ${when}`
+  ].filter(Boolean).join('\n');
+
+  const resp = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text,
+      parse_mode: 'Markdown',
+      disable_web_page_preview: true
+    })
+  });
+  if (!resp.ok) {
+    const body = await resp.text().catch(() => '');
+    throw new Error(`Telegram ${resp.status}: ${body}`);
+  }
+}
