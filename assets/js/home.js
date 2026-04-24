@@ -30,14 +30,14 @@ function renderCourses() {
   `).join('');
 }
 
-function renderFeaturedReviews() {
+async function renderFeaturedReviews() {
   const wrap = document.getElementById('featured-reviews');
   if (!wrap) return;
   const pooled = [];
-  (window.COURSES || []).forEach(c => {
-    const revs = ReviewStore.list(c.id);
+  for (const c of (window.COURSES || [])) {
+    const revs = await ReviewStore.list(c.id);
     revs.slice(0, 2).forEach(r => pooled.push({ ...r, courseTitle: c.title, courseId: c.id }));
-  });
+  }
   // 별점 높은 순 3개
   const pick = pooled.sort((a, b) => b.rating - a.rating).slice(0, 3);
   wrap.innerHTML = pick.map(r => `

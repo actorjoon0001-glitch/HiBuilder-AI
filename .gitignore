@@ -6,3 +6,6 @@ node_modules/
 dist/
 .env
 .env.local
+
+# Supabase 키 (로컬 전용)
+assets/js/supabase-config.js

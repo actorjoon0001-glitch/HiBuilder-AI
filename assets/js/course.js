@@ -138,8 +138,8 @@ function renderDetail(c) {
   `;
 }
 
-function renderReviews(courseId) {
-  const list = ReviewStore.list(courseId);
+async function renderReviews(courseId) {
+  const list = await ReviewStore.list(courseId);
   const sumEl = document.getElementById('review-summary');
   const listEl = document.getElementById('review-list');
   if (!list.length) {
@@ -202,17 +202,27 @@ function wireReviewForm(courseId) {
   starsEl.querySelectorAll('span').forEach(s => {
     s.addEventListener('click', () => setStars(Number(s.dataset.v)));
   });
-  document.getElementById('submit-review').addEventListener('click', () => {
+  const btn = document.getElementById('submit-review');
+  btn.addEventListener('click', async () => {
     const name = document.getElementById('review-name').value.trim();
     const text = document.getElementById('review-text').value.trim();
     if (!name) return alert('이름을 입력해 주세요.');
     if (text.length < 10) return alert('후기는 최소 10자 이상 작성해 주세요.');
-    const today = new Date().toISOString().slice(0, 10);
-    ReviewStore.add(courseId, { name, rating, text, date: today, verified: false });
-    document.getElementById('review-name').value = '';
-    document.getElementById('review-text').value = '';
-    renderReviews(courseId);
-    alert('후기가 등록되었습니다. 감사합니다!');
+    btn.disabled = true;
+    btn.textContent = '등록 중...';
+    try {
+      await ReviewStore.add(courseId, { name, rating, text, verified: false });
+      document.getElementById('review-name').value = '';
+      document.getElementById('review-text').value = '';
+      await renderReviews(courseId);
+      alert('후기가 등록되었습니다. 감사합니다!');
+    } catch (e) {
+      alert('후기 등록에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '후기 등록';
+    }
   });
 }
 

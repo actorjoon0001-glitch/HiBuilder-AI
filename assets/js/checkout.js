@@ -86,10 +86,12 @@ function renderCheckout(c) {
 }
 
 function wireCheckout(c) {
-  document.getElementById('checkout-form').addEventListener('submit', (e) => {
+  const form = document.getElementById('checkout-form');
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const agree = document.getElementById('c-agree').checked;
     if (!agree) return alert('약관에 동의해 주세요.');
+    const btn = form.querySelector('button[type="submit"]');
     const order = {
       id: 'ORD-' + Date.now(),
       courseId: c.id,
@@ -101,7 +103,16 @@ function wireCheckout(c) {
       price: c.price,
       date: new Date().toISOString()
     };
-    OrderStore.save(order);
-    location.href = `success.html?id=${c.id}`;
+    btn.disabled = true;
+    btn.textContent = '결제 처리 중...';
+    try {
+      await OrderStore.save(order);
+      location.href = `success.html?id=${c.id}`;
+    } catch (err) {
+      console.error(err);
+      alert('주문 저장에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+      btn.disabled = false;
+      btn.textContent = `${fmtPrice(c.price)} 결제하기`;
+    }
   });
 }

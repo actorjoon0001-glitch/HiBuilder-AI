@@ -68,13 +68,45 @@ npx serve .
 }
 ```
 
+## Supabase 연동
+
+리뷰·주문을 실제 DB에 저장합니다. 설정이 비어 있으면 자동으로 localStorage fallback으로 동작하므로 세팅 전에도 사이트는 그대로 돕니다.
+
+### 1) 스키마 생성
+
+Supabase 대시보드 → **SQL Editor** 에서 `supabase/schema.sql` 전체를 붙여넣고 Run. 다음이 만들어집니다.
+
+- `public.reviews` — 리뷰 저장 (익명 insert 허용, 누구나 read)
+- `public.orders` — 주문 기록 (익명 insert 허용, read는 서비스롤만)
+- `public.has_purchased(course_id, email)` RPC — "구매 확인" 뱃지용
+- 각 테이블 RLS 정책 활성화
+
+### 2) 키 입력
+
+`assets/js/supabase-config.js` 열고 값 채우기:
+
+```js
+window.SUPABASE_CONFIG = {
+  url:     "https://xxxxx.supabase.co",
+  anonKey: "eyJhbGciOi..."
+};
+```
+
+이 파일은 `.gitignore`에 포함되어 저장소에 올라가지 않습니다. 팀 공유용 템플릿은 `supabase-config.example.js` 참고.
+
+### 3) 확인
+
+- 상세페이지에서 후기 등록 → Supabase Table Editor의 `reviews` 행 생성 확인
+- 결제 페이지에서 주문 → `orders` 행 생성 확인
+- 미설정 상태에서는 푸터에 "⚠ Supabase 미설정" 배너가 뜹니다.
+
 ## 실제 서비스 전환 체크리스트
 
-1. **결제**: `assets/js/checkout.js`의 `wireCheckout` 내부를 PG SDK 호출로 교체
-2. **리뷰 저장**: `assets/js/main.js`의 `ReviewStore`를 REST API/Firebase 호출로 교체
+1. **결제**: `assets/js/checkout.js`의 `wireCheckout` 내부를 PG SDK(토스페이먼츠/포트원) 호출로 교체. 성공 콜백에서 `orders.status`를 `paid`로 update.
+2. **구매 확인 뱃지**: `has_purchased` RPC를 호출해 리뷰 작성자가 실제 구매자일 때만 `verified=true`로 저장하도록 보강.
 3. **강의 콘텐츠 영상**: Vimeo/JW Player 등 스트리밍 서비스 연동 후 상세 페이지에 플레이어 삽입
-4. **회원 시스템**: 필요 시 Firebase Auth / Supabase Auth 도입
-5. **관리자**: 강의/주문/후기 관리 CMS는 Strapi, Supabase Studio, 또는 자체 대시보드
+4. **회원 시스템**: Supabase Auth 도입 (이메일/소셜 로그인, 내 강의 목록)
+5. **관리자**: 강의/주문/후기 관리는 Supabase Studio 또는 자체 대시보드
 
 ## 라이선스
 
