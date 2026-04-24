@@ -2,6 +2,25 @@
 const FMT = new Intl.NumberFormat('ko-KR');
 const fmtPrice = n => FMT.format(n) + '원';
 
+// =====================================================
+// Supabase 초기화 (설정이 비어 있으면 localStorage fallback)
+// =====================================================
+const SB = (() => {
+  const cfg = window.SUPABASE_CONFIG || {};
+  if (!cfg.url || !cfg.anonKey || !window.supabase) {
+    return { enabled: false, client: null };
+  }
+  try {
+    const client = window.supabase.createClient(cfg.url, cfg.anonKey, {
+      auth: { persistSession: false }
+    });
+    return { enabled: true, client };
+  } catch (e) {
+    console.warn('[Supabase] 초기화 실패, localStorage fallback으로 동작합니다.', e);
+    return { enabled: false, client: null };
+  }
+})();
+
 function renderHeader(active) {
   const el = document.getElementById('site-header');
   if (!el) return;
@@ -40,10 +59,12 @@ function renderFooter() {
           <a href="#">고객센터</a>
         </div>
         <div class="biz">
-          HiBuilder · 대표 김하이 · 사업자등록번호 000-00-00000<br/>
-          통신판매업신고 제0000-서울강남-0000호 · 이메일 help@hibuilder.ai<br/>
-          © ${new Date().getFullYear()} HiBuilder. All rights reserved.
+          상호 <b style="color:#cbd5e1">루밍홈</b> · 대표 이상준 · 사업자등록번호 474-23-01704<br/>
+          통신판매업신고 제2025-경기김포-8673호 · 사업장 경기도 김포시 김포한강7로22번길 174-99 201호<br/>
+          고객센터 010-8329-8049 · 이메일 <a href="mailto:harold0001@naver.com" style="color:#cbd5e1">harold0001@naver.com</a><br/>
+          서비스 브랜드: HiBuilder · © ${new Date().getFullYear()} 루밍홈. All rights reserved.
         </div>
+        ${!SB.enabled ? `<div class="biz" style="color:#f59e0b;margin-top:10px">⚠ Supabase 미설정 — 현재 로컬(localStorage) 모드로 동작 중</div>` : ''}
       </div>
     </footer>
   `;
@@ -63,31 +84,90 @@ function qs(name) {
   return new URLSearchParams(location.search).get(name);
 }
 
-// 리뷰 저장소 - 현재는 localStorage를 쓰고, 추후 백엔드로 교체 시 이 네 함수만 바꿔 주면 됩니다.
+// =====================================================
+// 리뷰 저장소 (Supabase ↔ localStorage fallback)
+// =====================================================
 const ReviewStore = {
   key: courseId => `reviews::${courseId}`,
-  list(courseId) {
+
+  async list(courseId) {
+    if (SB.enabled) {
+      const { data, error } = await SB.client
+        .from('reviews')
+        .select('name, rating, text, verified, created_at')
+        .eq('course_id', courseId)
+        .order('created_at', { ascending: false })
+        .limit(100);
+      if (error) {
+        console.warn('[reviews.list] Supabase 오류, 로컬 fallback:', error.message);
+      } else {
+        const rows = (data || []).map(r => ({
+          name: r.name,
+          rating: r.rating,
+          text: r.text,
+          verified: r.verified,
+          date: (r.created_at || '').slice(0, 10)
+        }));
+        // 초기엔 비어있을 수 있으니 시드 리뷰도 합쳐서 보여줌(서버에 이미 동일건이 있다면 중복될 수 있어 서버 우선)
+        if (rows.length) return rows;
+      }
+    }
     const local = JSON.parse(localStorage.getItem(this.key(courseId)) || 'null');
     if (local && local.length) return local;
     return (window.SEED_REVIEWS && window.SEED_REVIEWS[courseId]) || [];
   },
-  add(courseId, review) {
+
+  async add(courseId, review) {
+    if (SB.enabled) {
+      const { error } = await SB.client.from('reviews').insert({
+        course_id: courseId,
+        name:      review.name,
+        rating:    review.rating,
+        text:      review.text,
+        verified:  false
+      });
+      if (error) {
+        console.warn('[reviews.add] Supabase 오류, 로컬에만 저장:', error.message);
+      } else {
+        return;
+      }
+    }
     const current = JSON.parse(localStorage.getItem(this.key(courseId)) || 'null')
       || ((window.SEED_REVIEWS && window.SEED_REVIEWS[courseId]) || []).slice();
-    current.unshift(review);
+    current.unshift({ ...review, date: new Date().toISOString().slice(0, 10) });
     localStorage.setItem(this.key(courseId), JSON.stringify(current));
-    return current;
   }
 };
 
-// 주문 저장소
+// =====================================================
+// 주문 저장소 (Supabase ↔ localStorage fallback)
+// =====================================================
 const OrderStore = {
   key: 'orders',
-  save(order) {
+
+  async save(order) {
+    if (SB.enabled) {
+      const { error } = await SB.client.from('orders').insert({
+        order_no:     order.id,
+        course_id:    order.courseId,
+        course_title: order.courseTitle,
+        name:         order.name,
+        email:        order.email,
+        phone:        order.phone,
+        pay_method:   order.pay,
+        price:        order.price,
+        status:       'pending'
+      });
+      if (error) {
+        console.warn('[orders.save] Supabase 오류, 로컬에만 저장:', error.message);
+      }
+    }
+    // 완료 페이지에서 즉시 보여줘야 하므로 로컬에도 항상 저장
     const list = JSON.parse(localStorage.getItem(this.key) || '[]');
     list.unshift(order);
     localStorage.setItem(this.key, JSON.stringify(list));
   },
+
   last() {
     const list = JSON.parse(localStorage.getItem(this.key) || '[]');
     return list[0];
