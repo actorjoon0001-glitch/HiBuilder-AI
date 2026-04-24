@@ -45,7 +45,9 @@ function renderCheckout(c) {
           <div class="form-group" style="margin-top:18px">
             <label>
               <input type="checkbox" id="c-agree" style="width:auto;margin-right:6px"/>
-              이용약관 · 개인정보처리방침 · 환불정책에 동의합니다.
+              <a href="terms.html" target="_blank" style="color:var(--brand)">이용약관</a> ·
+              <a href="privacy.html" target="_blank" style="color:var(--brand)">개인정보처리방침</a> ·
+              <a href="refund.html" target="_blank" style="color:var(--brand)">환불정책</a>에 동의합니다.
             </label>
           </div>
 
