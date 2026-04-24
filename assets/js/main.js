@@ -59,9 +59,10 @@ function renderFooter() {
           <a href="#">고객센터</a>
         </div>
         <div class="biz">
-          HiBuilder · 대표 김하이 · 사업자등록번호 000-00-00000<br/>
-          통신판매업신고 제0000-서울강남-0000호 · 이메일 help@hibuilder.ai<br/>
-          © ${new Date().getFullYear()} HiBuilder. All rights reserved.
+          상호 <b style="color:#cbd5e1">루밍홈</b> · 대표 [대표자명] · 사업자등록번호 [000-00-00000]<br/>
+          통신판매업신고 [제0000-서울○○-0000호] · 사업장 [주소]<br/>
+          고객센터 [010-0000-0000] · 이메일 [help@hibuilder.ai]<br/>
+          서비스 브랜드: HiBuilder · © ${new Date().getFullYear()} 루밍홈. All rights reserved.
         </div>
         ${!SB.enabled ? `<div class="biz" style="color:#f59e0b;margin-top:10px">⚠ Supabase 미설정 — 현재 로컬(localStorage) 모드로 동작 중</div>` : ''}
       </div>
