@@ -58,22 +58,30 @@ function renderDetail(c) {
           <section>
             <h2>커리큘럼 <span class="muted" style="font-size:14px;font-weight:500">· ${totalLectures}개 강의</span></h2>
             <div class="curriculum">
-              ${c.curriculum.map((s, i) => `
-                <div class="cu-section ${i === 0 ? 'open' : ''}">
-                  <div class="cu-head">
-                    <span>${s.section}</span>
-                    <span class="count">${s.lectures.length}개 · 펼치기</span>
+              ${(() => {
+                let globalIdx = -1;
+                return c.curriculum.map((s, i) => `
+                  <div class="cu-section ${i === 0 ? 'open' : ''}">
+                    <div class="cu-head">
+                      <span>${s.section}</span>
+                      <span class="count">${s.lectures.length}개 · 펼치기</span>
+                    </div>
+                    <div class="cu-list" ${i === 0 ? '' : 'style="display:none"'}>
+                      ${s.lectures.map(l => {
+                        globalIdx += 1;
+                        const clickable = l.preview === true;
+                        const content = `
+                          <span>${l.title}${l.preview ? '<span class="pv">맛보기</span>' : ''}</span>
+                          <span class="muted">${l.time}</span>
+                        `;
+                        return clickable
+                          ? `<a class="cu-item" style="text-decoration:none;color:inherit" href="lecture.html?id=${c.id}&l=${globalIdx}">${content}</a>`
+                          : `<div class="cu-item">${content}</div>`;
+                      }).join('')}
+                    </div>
                   </div>
-                  <div class="cu-list" ${i === 0 ? '' : 'style="display:none"'}>
-                    ${s.lectures.map(l => `
-                      <div class="cu-item">
-                        <span>${l.title}${l.preview ? '<span class="pv">맛보기</span>' : ''}</span>
-                        <span class="muted">${l.time}</span>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-              `).join('')}
+                `).join('');
+              })()}
             </div>
           </section>
 
