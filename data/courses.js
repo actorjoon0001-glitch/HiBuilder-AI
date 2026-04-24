@@ -72,9 +72,9 @@ AI와 노코드 도구만으로 <b>방문예약 접수 → 일정 확정 → 리
       }
     ],
     instructor: {
-      name: "김하이 (HiBuilder)",
+      name: "이상준",
       title: "AI 자동화 컨설턴트 · 누적 수강생 1.2만명",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
       bio: "중소 사업장 200곳 이상의 예약·상담 업무를 AI 자동화로 개선했습니다. 복잡한 개발 지식 없이도 따라 할 수 있도록 강의합니다."
     },
     faqs: [
@@ -121,9 +121,9 @@ AI와 노코드 도구만으로 <b>방문예약 접수 → 일정 확정 → 리
       }
     ],
     instructor: {
-      name: "김하이 (HiBuilder)",
+      name: "이상준",
       title: "AI 자동화 컨설턴트",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
       bio: "상담 자동화로 실제 매장 매출을 30% 이상 끌어올린 사례를 다수 보유."
     },
     faqs: [
@@ -160,9 +160,9 @@ AI와 노코드 도구만으로 <b>방문예약 접수 → 일정 확정 → 리
       }
     ],
     instructor: {
-      name: "김하이 (HiBuilder)",
+      name: "이상준",
       title: "AI 자동화 컨설턴트",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
       bio: "200곳 이상의 자영업 마케팅을 AI로 자동화해 왔습니다."
     },
     faqs: [
