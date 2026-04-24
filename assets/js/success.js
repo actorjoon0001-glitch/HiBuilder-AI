@@ -81,7 +81,7 @@ function renderError(root, course, message) {
         <div class="check" style="background:#fee2e2;color:#b91c1c">!</div>
         <h1 style="font-size:22px;font-weight:800;margin:0 0 8px">결제가 완료되지 않았어요</h1>
         <p class="muted" style="margin:0 0 8px">${escapeHtml2(message)}</p>
-        <p class="muted" style="margin-bottom:22px;font-size:13px">문제가 계속되면 help@hibuilder.ai 로 문의해 주세요.</p>
+        <p class="muted" style="margin-bottom:22px;font-size:13px">문제가 계속되면 <a href="mailto:harold0001@naver.com">harold0001@naver.com</a> 으로 문의해 주세요.</p>
         <a href="checkout.html?id=${course ? course.id : ''}" class="btn btn-primary btn-lg">다시 시도</a>
         <a href="index.html" class="btn btn-ghost btn-lg" style="margin-top:8px">홈으로</a>
       </div>

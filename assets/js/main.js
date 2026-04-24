@@ -59,9 +59,9 @@ function renderFooter() {
           <a href="#">고객센터</a>
         </div>
         <div class="biz">
-          상호 <b style="color:#cbd5e1">루밍홈</b> · 대표 [대표자명] · 사업자등록번호 [000-00-00000]<br/>
-          통신판매업신고 [제0000-서울○○-0000호] · 사업장 [주소]<br/>
-          고객센터 [010-0000-0000] · 이메일 [help@hibuilder.ai]<br/>
+          상호 <b style="color:#cbd5e1">루밍홈</b> · 대표 이상준 · 사업자등록번호 474-23-01704<br/>
+          통신판매업신고 제2025-경기김포-8673호 · 사업장 경기도 김포시 김포한강7로22번길 174-99 201호<br/>
+          고객센터 010-8329-8049 · 이메일 <a href="mailto:harold0001@naver.com" style="color:#cbd5e1">harold0001@naver.com</a><br/>
           서비스 브랜드: HiBuilder · © ${new Date().getFullYear()} 루밍홈. All rights reserved.
         </div>
         ${!SB.enabled ? `<div class="biz" style="color:#f59e0b;margin-top:10px">⚠ Supabase 미설정 — 현재 로컬(localStorage) 모드로 동작 중</div>` : ''}
