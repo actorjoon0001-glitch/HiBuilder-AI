@@ -1016,6 +1016,209 @@ body {
   color: var(--ink-2);
 }
 
+/* ===== 건축 자사몰 확장 스타일 ===== */
+
+/* 카테고리 칩 네비 */
+.cat-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.cat-chip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.cat-chip:hover {
+  border-color: #cfd3ff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+.cat-chip .emoji { font-size: 30px; }
+.cat-chip .t { display: flex; flex-direction: column; }
+.cat-chip .t b { font-size: 16px; color: var(--ink); }
+.cat-chip .t span { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+/* 상품 카드 확장 */
+.course-card .cat-badge {
+  left: auto;
+  right: 12px;
+  background: rgba(91, 91, 245, 0.92);
+}
+.course-card .unit { font-size: 12.5px; color: var(--muted); font-weight: 500; }
+.course-card .card-action {
+  margin-top: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--brand);
+}
+
+/* 이용방법 스텝 카드 */
+.step-card {
+  padding: 24px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.step-card .step-no {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.step-card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 800; color: var(--ink); }
+.step-card p { margin: 0; color: var(--ink-2); font-size: 14px; line-height: 1.6; }
+
+/* 지도 프리뷰 CTA */
+.map-cta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: center;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+.map-cta h3 { margin: 0 0 10px; font-size: 20px; font-weight: 800; color: var(--ink); }
+.map-cta p { margin: 0 0 18px; color: var(--ink-2); line-height: 1.6; }
+.map-cta-list { display: flex; flex-direction: column; gap: 10px; }
+.partner-mini {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px;
+  text-decoration: none; background: var(--bg); transition: border-color 0.15s;
+}
+.partner-mini:hover { border-color: #cfd3ff; }
+.partner-mini b { display: block; color: var(--ink); font-size: 14.5px; }
+.partner-mini span { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.partner-mini .pr { color: var(--warning); font-weight: 700; font-size: 14px; }
+
+/* 시공업체 페이지 */
+.partners-hero {
+  background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+  color: #fff;
+  padding: 48px 0 32px;
+}
+.partners-hero .container { }
+.partners-hero h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin: 0 0 10px; letter-spacing: -0.02em; }
+.partners-hero p { color: #cbd5e1; max-width: 760px; line-height: 1.6; margin: 0 0 20px; }
+.region-filter { display: flex; flex-wrap: wrap; gap: 8px; }
+.region-btn {
+  padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.06); color: #e2e8f0; font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: all 0.15s;
+}
+.region-btn:hover { background: rgba(255,255,255,0.14); }
+.region-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+
+.partners-layout {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 28px;
+  padding: 32px 0 80px;
+  align-items: start;
+}
+.partners-map-wrap {
+  position: sticky;
+  top: 88px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+#map { width: 100%; height: 620px; }
+.map-fallback {
+  width: 100%; height: 620px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg); text-align: center; padding: 24px;
+}
+.map-fallback .fb-icon { font-size: 46px; margin-bottom: 12px; }
+.map-fallback p { color: var(--muted); line-height: 1.7; font-size: 14.5px; margin: 0; }
+
+.partners-list { display: flex; flex-direction: column; gap: 14px; max-height: 640px; overflow-y: auto; padding-right: 4px; }
+.partner-card {
+  border: 1px solid var(--line); border-radius: 14px; padding: 18px; background: #fff;
+  cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
+}
+.partner-card:hover { border-color: #cfd3ff; box-shadow: 0 6px 16px rgba(15,23,42,0.06); }
+.partner-card .pc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.partner-card .pc-name { font-size: 16px; font-weight: 800; color: var(--ink); }
+.partner-card .pc-addr { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.partner-card .pc-rating { color: var(--warning); font-weight: 800; font-size: 15px; white-space: nowrap; }
+.partner-card .pc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.partner-card .pc-tags span {
+  font-size: 12px; background: var(--brand-soft); color: var(--brand-dark);
+  padding: 4px 10px; border-radius: 999px; font-weight: 600;
+}
+.partner-card .pc-desc { font-size: 13.5px; color: var(--ink-2); line-height: 1.6; margin: 0 0 14px; }
+.partner-card .pc-foot { display: flex; justify-content: space-between; align-items: center; }
+.partner-card .pc-foot .btn { padding: 8px 16px; font-size: 14px; }
+
+/* 상담 신청 폼 / 모달 */
+.lead-form {
+  border: 1px solid var(--line); border-radius: 12px; padding: 22px; background: var(--bg);
+}
+.lead-form .form-group { margin-bottom: 14px; }
+.lead-form label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: var(--ink); }
+.lead-form input, .lead-form textarea {
+  width: 100%; padding: 11px 13px; border: 1px solid var(--line); border-radius: 8px;
+  font-size: 14.5px; font-family: inherit; background: #fff; outline: none;
+}
+.lead-form textarea { min-height: 90px; resize: vertical; }
+.lead-form input:focus, .lead-form textarea:focus {
+  border-color: var(--brand); box-shadow: 0 0 0 3px rgba(91,91,245,0.1);
+}
+
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.modal {
+  position: relative;
+  background: #fff; border-radius: 16px; padding: 28px; width: 100%; max-width: 440px;
+  box-shadow: 0 24px 60px rgba(15,23,42,0.25);
+  max-height: 90vh; overflow-y: auto;
+}
+.modal h3 { margin: 0 0 6px; font-size: 20px; font-weight: 800; color: var(--ink); }
+.modal .form-group { margin-bottom: 14px; }
+.modal label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; color: var(--ink); }
+.modal input, .modal textarea {
+  width: 100%; padding: 11px 13px; border: 1px solid var(--line); border-radius: 8px;
+  font-size: 14.5px; font-family: inherit; outline: none;
+}
+.modal textarea { min-height: 80px; resize: vertical; }
+.modal input:focus, .modal textarea:focus {
+  border-color: var(--brand); box-shadow: 0 0 0 3px rgba(91,91,245,0.1);
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  border: none; background: transparent; font-size: 18px; color: var(--muted); cursor: pointer;
+}
+
+/* 수량 조절 */
+.qty-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0 14px; border-bottom: 1px solid var(--line); margin-bottom: 8px;
+  font-size: 14.5px; color: var(--ink-2);
+}
+.qty-ctl { display: flex; align-items: center; gap: 12px; }
+.qty-ctl button {
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line);
+  background: #fff; font-size: 18px; cursor: pointer; color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.qty-ctl button:hover { background: var(--bg); }
+.qty-ctl #qty-val { min-width: 24px; text-align: center; font-weight: 700; }
+
 /* Utility */
 .muted { color: var(--muted); }
 .text-center { text-align: center; }
@@ -1047,4 +1250,10 @@ body {
     grid-template-columns: 1fr;
     text-align: center;
   }
+  .cat-nav { grid-template-columns: 1fr; }
+  .map-cta { grid-template-columns: 1fr; }
+  .partners-layout { grid-template-columns: 1fr; }
+  .partners-map-wrap { position: static; }
+  #map, .map-fallback { height: 380px; }
+  .partners-list { max-height: none; }
 }

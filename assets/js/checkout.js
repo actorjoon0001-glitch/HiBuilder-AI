@@ -1,27 +1,43 @@
-// 결제 페이지 - 토스페이먼츠 위젯 연동
+// 결제 페이지 - 토스페이먼츠 위젯 연동 (자재/가전·가구 직접 결제)
 document.addEventListener('DOMContentLoaded', async () => {
   renderHeader();
   renderFooter();
   const id = qs('id');
-  const course = getCourse(id);
-  if (!course) {
-    document.getElementById('checkout-root').innerHTML = `
+  const product = getProduct(id);
+  const root = document.getElementById('checkout-root');
+  if (!product) {
+    root.innerHTML = `
       <div class="container section text-center">
-        <h2>강의를 찾을 수 없습니다</h2>
+        <h2>상품을 찾을 수 없습니다</h2>
         <a href="index.html" class="btn btn-primary mt-16">홈으로</a>
       </div>`;
     return;
   }
-  renderCheckout(course);
-  await wireCheckout(course);
+  // 주택모델(상담형)은 결제 대상이 아님 → 상세로 유도
+  if (product.mode === 'consult') {
+    root.innerHTML = `
+      <div class="container section text-center">
+        <h2>이 상품은 상담·견적 신청 상품입니다</h2>
+        <p class="muted">주택모델은 결제가 아닌 무료 상담으로 진행됩니다.</p>
+        <a href="product.html?id=${product.id}" class="btn btn-primary mt-16">상담 신청하러 가기</a>
+      </div>`;
+    return;
+  }
+  renderCheckout(product);
+  await wireCheckout(product);
 });
 
+// 현재 선택 수량
+let QTY = 1;
+
+function lineTotal(p) { return p.price * QTY; }
+
 function renderCheckout(c) {
-  document.title = `결제 · ${c.title}`;
+  document.title = `주문/결제 · ${c.title}`;
   const isTestKey = (window.TOSS_CONFIG?.clientKey || '').startsWith('test_');
   document.getElementById('checkout-root').innerHTML = `
     <div class="container">
-      <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;margin:32px 0 8px">수강 신청</h1>
+      <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;margin:32px 0 8px">주문/결제</h1>
       <p class="muted" style="margin:0 0 24px">아래 정보를 입력하고 결제 수단을 선택해 주세요.</p>
       <div class="checkout-layout">
         <form class="checkout-form" id="checkout-form" novalidate>
@@ -30,12 +46,16 @@ function renderCheckout(c) {
             <input type="text" id="c-name" required placeholder="홍길동"/>
           </div>
           <div class="form-group">
-            <label for="c-email">이메일 (수강 안내 발송)</label>
+            <label for="c-email">이메일 (주문내역 발송)</label>
             <input type="email" id="c-email" required placeholder="you@example.com"/>
           </div>
           <div class="form-group">
             <label for="c-phone">휴대전화</label>
             <input type="tel" id="c-phone" required placeholder="010-1234-5678"/>
+          </div>
+          <div class="form-group">
+            <label for="c-addr">배송/시공 주소</label>
+            <input type="text" id="c-addr" required placeholder="주소를 입력해 주세요"/>
           </div>
 
           <h3 style="font-size:16px;font-weight:800;margin:28px 0 10px">결제 수단</h3>
@@ -47,7 +67,7 @@ function renderCheckout(c) {
               <input type="checkbox" id="c-agree" style="width:auto;margin-right:6px"/>
               <a href="terms.html" target="_blank" style="color:var(--brand)">이용약관</a> ·
               <a href="privacy.html" target="_blank" style="color:var(--brand)">개인정보처리방침</a> ·
-              <a href="refund.html" target="_blank" style="color:var(--brand)">환불정책</a>에 동의합니다.
+              <a href="refund.html" target="_blank" style="color:var(--brand)">교환·환불정책</a>에 동의합니다.
             </label>
           </div>
 
@@ -71,24 +91,39 @@ function renderCheckout(c) {
             <h3 style="font-size:16px;font-weight:800;margin:0 0 14px">주문 요약</h3>
             <div style="display:flex;gap:12px;margin-bottom:16px">
               <div style="width:80px;aspect-ratio:16/9;border-radius:8px;background:url('${c.thumbnail}') center/cover;flex-shrink:0"></div>
-              <div style="font-size:14px;font-weight:600;line-height:1.4;color:var(--ink)">${c.title}</div>
+              <div style="font-size:14px;font-weight:600;line-height:1.4;color:var(--ink)">${c.title}${c.unit ? `<div style="font-weight:500;color:var(--muted);font-size:12.5px;margin-top:4px">${c.unit}</div>` : ''}</div>
+            </div>
+            <div class="qty-row">
+              <span>수량</span>
+              <div class="qty-ctl">
+                <button type="button" id="qty-minus">−</button>
+                <span id="qty-val">1</span>
+                <button type="button" id="qty-plus">+</button>
+              </div>
             </div>
             <div class="summary-row">
-              <span>강의료</span><span>${fmtPrice(c.originalPrice || c.price)}</span>
+              <span>단가</span><span>${fmtPrice(c.price)}</span>
             </div>
             ${c.originalPrice ? `
               <div class="summary-row" style="color:#b91c1c">
-                <span>할인 (${c.discountLabel || ''})</span><span>-${fmtPrice(c.originalPrice - c.price)}</span>
+                <span>정가 대비 할인</span><span>-${fmtPrice((c.originalPrice - c.price))}<span style="font-size:12px">/개</span></span>
               </div>
             ` : ''}
             <div class="summary-row total">
-              <span>최종 결제금액</span><span>${fmtPrice(c.price)}</span>
+              <span>최종 결제금액</span><span id="grand-total">${fmtPrice(c.price)}</span>
             </div>
           </div>
         </aside>
       </div>
     </div>
   `;
+}
+
+function updateTotals(c) {
+  document.getElementById('qty-val').textContent = QTY;
+  document.getElementById('grand-total').textContent = fmtPrice(lineTotal(c));
+  const payBtn = document.getElementById('pay-btn');
+  if (payBtn && !payBtn.disabled) payBtn.textContent = `${fmtPrice(lineTotal(c))} 결제하기`;
 }
 
 async function wireCheckout(c) {
@@ -99,7 +134,14 @@ async function wireCheckout(c) {
   }
 
   const payBtn = document.getElementById('pay-btn');
-  const form = document.getElementById('checkout-form');
+
+  // 수량 조절
+  document.getElementById('qty-minus').addEventListener('click', async () => {
+    if (QTY > 1) { QTY--; updateTotals(c); await widgetsSetAmount(); }
+  });
+  document.getElementById('qty-plus').addEventListener('click', async () => {
+    if (QTY < 999) { QTY++; updateTotals(c); await widgetsSetAmount(); }
+  });
 
   // 익명 고객 키 (브라우저별 1개 유지)
   let customerKey = localStorage.getItem('toss_customer_key');
@@ -109,10 +151,14 @@ async function wireCheckout(c) {
   }
 
   let widgets;
+  async function widgetsSetAmount() {
+    if (widgets) await widgets.setAmount({ currency: 'KRW', value: lineTotal(c) });
+  }
+
   try {
     const tossPayments = TossPayments(clientKey);
     widgets = tossPayments.widgets({ customerKey });
-    await widgets.setAmount({ currency: 'KRW', value: c.price });
+    await widgets.setAmount({ currency: 'KRW', value: lineTotal(c) });
     await Promise.all([
       widgets.renderPaymentMethods({ selector: '#payment-method', variantKey: 'DEFAULT' }),
       widgets.renderAgreement({ selector: '#agreement', variantKey: 'AGREEMENT' })
@@ -124,24 +170,29 @@ async function wireCheckout(c) {
   }
 
   payBtn.disabled = false;
-  payBtn.textContent = `${fmtPrice(c.price)} 결제하기`;
+  payBtn.textContent = `${fmtPrice(lineTotal(c))} 결제하기`;
 
   payBtn.addEventListener('click', async () => {
     const name  = document.getElementById('c-name').value.trim();
     const email = document.getElementById('c-email').value.trim();
     const phone = document.getElementById('c-phone').value.trim();
+    const addr  = document.getElementById('c-addr').value.trim();
     const agree = document.getElementById('c-agree').checked;
 
     if (!name)                return alert('이름을 입력해 주세요.');
     if (!/^\S+@\S+\.\S+$/.test(email)) return alert('이메일을 정확히 입력해 주세요.');
     if (phone.replace(/\D/g, '').length < 9) return alert('휴대전화 번호를 정확히 입력해 주세요.');
+    if (!addr)                return alert('배송/시공 주소를 입력해 주세요.');
     if (!agree)               return alert('약관에 동의해 주세요.');
+
+    const amount = lineTotal(c);
 
     // 1) 주문 먼저 생성 (status=pending)
     const orderId = 'ORD-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
     const order = {
-      id: orderId, courseId: c.id, courseTitle: c.title,
-      name, email, phone, pay: 'toss', price: c.price,
+      id: orderId, productId: c.id,
+      productTitle: `${c.title}${QTY > 1 ? ` x${QTY}` : ''}`,
+      name, email, phone, pay: 'toss', price: amount,
       date: new Date().toISOString()
     };
 
@@ -153,15 +204,16 @@ async function wireCheckout(c) {
       console.error(err);
       alert('주문 저장에 실패했습니다. 잠시 후 다시 시도해 주세요.');
       payBtn.disabled = false;
-      payBtn.textContent = `${fmtPrice(c.price)} 결제하기`;
+      payBtn.textContent = `${fmtPrice(amount)} 결제하기`;
       return;
     }
 
     // 2) 토스페이먼츠 결제 요청 (리다이렉트)
+    const orderName = `${c.title}${QTY > 1 ? ` 외 ${QTY - 1}개 분량` : ''}`;
     try {
       await widgets.requestPayment({
         orderId,
-        orderName: c.title.length > 100 ? c.title.slice(0, 97) + '...' : c.title,
+        orderName: orderName.length > 100 ? orderName.slice(0, 97) + '...' : orderName,
         customerName: name,
         customerEmail: email,
         customerMobilePhone: phone.replace(/\D/g, ''),
@@ -172,7 +224,7 @@ async function wireCheckout(c) {
       console.error('[Toss] requestPayment 실패', err);
       alert(err?.message || '결제 요청에 실패했습니다.');
       payBtn.disabled = false;
-      payBtn.textContent = `${fmtPrice(c.price)} 결제하기`;
+      payBtn.textContent = `${fmtPrice(amount)} 결제하기`;
     }
   });
 

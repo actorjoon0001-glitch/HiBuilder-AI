@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="전국 검증된 시공 파트너를 지도에서 찾고 무료 상담을 신청하세요."/>
+  <title>전국 시공업체 · HiBuilder</title>
+  <link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section class="partners-hero">
+    <div class="container">
+      <h1>🗺️ 전국 시공업체</h1>
+      <p>지역별 검증된 시공 파트너를 지도에서 확인하고 무료 상담을 신청하세요. 시공 계약은 고객과 시공사가 직접 체결하며, 상담은 무료입니다.</p>
+      <div class="region-filter" id="region-filter"></div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="partners-layout">
+      <div class="partners-map-wrap">
+        <div id="map"></div>
+        <div id="map-fallback" class="map-fallback hide"></div>
+      </div>
+      <div class="partners-list" id="partners-list"></div>
+    </div>
+  </main>
+
+  <!-- 상담 신청 모달 -->
+  <div class="modal-backdrop hide" id="lead-modal">
+    <div class="modal">
+      <button class="modal-close" id="modal-close">✕</button>
+      <h3 id="modal-title">시공 상담 신청</h3>
+      <p class="muted" id="modal-sub" style="margin:0 0 16px"></p>
+      <div class="form-group">
+        <label for="m-name">이름</label>
+        <input type="text" id="m-name" placeholder="홍길동"/>
+      </div>
+      <div class="form-group">
+        <label for="m-phone">연락처</label>
+        <input type="tel" id="m-phone" placeholder="010-1234-5678"/>
+      </div>
+      <div class="form-group">
+        <label for="m-message">문의 내용 (선택)</label>
+        <textarea id="m-message" placeholder="희망 지역, 예산, 시기 등을 적어주세요."></textarea>
+      </div>
+      <button class="btn btn-primary btn-lg" id="m-submit" style="width:100%">상담 신청하기</button>
+      <p class="muted" style="font-size:12.5px;margin-top:10px">신청 시 <a href="privacy.html" target="_blank" style="color:var(--brand)">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.</p>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/kakao-config.js"></script>
+  <script src="data/partners.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/partners.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# HiBuilder Course Marketplace - Netlify 배포 설정
+# HiBuilder 건축 자사몰 - Netlify 배포 설정
 
 [build]
   # 빌드 과정이 없는 정적 사이트 - 프로젝트 루트 그대로 퍼블리시
@@ -29,13 +29,19 @@
   [headers.values]
     Cache-Control = "public, max-age=3600"
 
-# 깔끔한 URL: /course/<id> → /course.html?id=<id>
+# 깔끔한 URL: /product/<id> → /product.html?id=<id>
 [[redirects]]
-  from   = "/course/:id"
-  to     = "/course.html?id=:id"
+  from   = "/product/:id"
+  to     = "/product.html?id=:id"
   status = 200
 
 [[redirects]]
   from   = "/checkout/:id"
   to     = "/checkout.html?id=:id"
   status = 200
+
+# 기존 /course 링크 하위호환 (혹시 남아있는 외부 링크 대응)
+[[redirects]]
+  from   = "/course/:id"
+  to     = "/product.html?id=:id"
+  status = 301
