@@ -24,6 +24,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!resp.ok || data.status !== 'paid') {
         return renderError(root, product, data.error || '결제 승인에 실패했습니다.');
       }
+      if (typeof window.track === 'function') {
+        window.track('Purchase', {
+          value:    Number(amount),
+          currency: 'KRW',
+          transaction_id: orderId,
+          items: product ? [{ id: product.id, name: product.title, price: product.price }] : []
+        });
+      }
       renderSuccess(root, product, { orderId, amount, method: data.method });
     } catch (err) {
       console.error(err);
