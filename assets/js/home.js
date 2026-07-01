@@ -14,7 +14,7 @@ function productCard(p) {
     ? `<span class="price">${fmtMoney(p.price)}</span><span class="unit"> ~</span>`
     : `${p.originalPrice ? `<span class="original">${fmtPrice(p.originalPrice)}</span>` : ''}<span class="price">${fmtPrice(p.price)}</span>${p.unit ? `<span class="unit"> ${p.unit}</span>` : ''}`;
   return `
-    <a class="course-card" href="product.html?id=${p.id}">
+    <a class="product-card" href="product.html?id=${p.id}">
       <div class="thumb" style="background-image:url('${p.thumbnail}')">
         ${p.discountLabel ? `<span class="badge">${p.discountLabel}</span>` : ''}
         <span class="badge cat-badge">${categoryLabel(p.category)}</span>
@@ -47,7 +47,7 @@ function renderCatNav() {
 }
 
 function renderCategoryGrids() {
-  document.querySelectorAll('.course-grid[data-cat]').forEach(grid => {
+  document.querySelectorAll('.product-grid[data-cat]').forEach(grid => {
     const cat = grid.dataset.cat;
     grid.innerHTML = productsByCategory(cat).map(productCard).join('');
   });
@@ -79,7 +79,7 @@ async function renderFeaturedReviews() {
   const pick = pooled.sort((a, b) => b.rating - a.rating).slice(0, 3);
   if (!pick.length) { wrap.innerHTML = '<p class="muted">아직 후기가 없습니다.</p>'; return; }
   wrap.innerHTML = pick.map(r => `
-    <div class="course-card" style="padding:22px;cursor:default">
+    <div class="product-card" style="padding:22px;cursor:default">
       <div style="color:var(--warning);font-size:16px;margin-bottom:8px">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
       <p style="font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 14px">"${escapeHtml(r.text)}"</p>
       <div style="font-size:13px;color:var(--muted)">
