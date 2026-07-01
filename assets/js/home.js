@@ -1,31 +1,69 @@
 // 홈 화면 렌더링
 document.addEventListener('DOMContentLoaded', () => {
-  renderHeader('courses');
+  renderHeader('주택모델');
   renderFooter();
-  renderCourses();
+  renderCatNav();
+  renderCategoryGrids();
+  renderPartnerPreview();
   renderFeaturedReviews();
-  wireFaq();
 });
 
-function renderCourses() {
-  const wrap = document.getElementById('course-grid');
-  if (!wrap) return;
-  wrap.innerHTML = (window.COURSES || []).map(c => `
-    <a class="course-card" href="course.html?id=${c.id}">
-      <div class="thumb" style="background-image:url('${c.thumbnail}')">
-        ${c.discountLabel ? `<span class="badge">${c.discountLabel}</span>` : ''}
+function productCard(p) {
+  const isConsult = p.mode === 'consult';
+  const priceHtml = isConsult
+    ? `<span class="price">${fmtMoney(p.price)}</span><span class="unit"> ~</span>`
+    : `${p.originalPrice ? `<span class="original">${fmtPrice(p.originalPrice)}</span>` : ''}<span class="price">${fmtPrice(p.price)}</span>${p.unit ? `<span class="unit"> ${p.unit}</span>` : ''}`;
+  return `
+    <a class="course-card" href="product.html?id=${p.id}">
+      <div class="thumb" style="background-image:url('${p.thumbnail}')">
+        ${p.discountLabel ? `<span class="badge">${p.discountLabel}</span>` : ''}
+        <span class="badge cat-badge">${categoryLabel(p.category)}</span>
       </div>
       <div class="body">
-        <h3>${c.title}</h3>
-        <p class="sub">${c.subtitle}</p>
+        <h3>${p.title}</h3>
+        <p class="sub">${p.subtitle}</p>
         <div class="meta">
-          <div>
-            ${c.originalPrice ? `<span class="original">${fmtPrice(c.originalPrice)}</span>` : ''}
-            <span class="price">${fmtPrice(c.price)}</span>
-          </div>
-          <div class="rating"><b>★ ${c.rating}</b> (${FMT.format(c.students)})</div>
+          <div>${priceHtml}</div>
+          <div class="rating"><b>★ ${p.rating}</b> (${FMT.format(p.reviews)})</div>
         </div>
+        <div class="card-action">${isConsult ? '무료 상담 신청 →' : '바로 구매하기 →'}</div>
       </div>
+    </a>
+  `;
+}
+
+function renderCatNav() {
+  const wrap = document.getElementById('cat-nav');
+  if (!wrap) return;
+  wrap.innerHTML = (window.CATEGORIES || []).map(c => `
+    <a class="cat-chip" href="#cat-${c.key}">
+      <span class="emoji">${c.emoji}</span>
+      <span class="t">
+        <b>${c.label}</b>
+        <span>${c.desc}</span>
+      </span>
+    </a>
+  `).join('');
+}
+
+function renderCategoryGrids() {
+  document.querySelectorAll('.course-grid[data-cat]').forEach(grid => {
+    const cat = grid.dataset.cat;
+    grid.innerHTML = productsByCategory(cat).map(productCard).join('');
+  });
+}
+
+function renderPartnerPreview() {
+  const wrap = document.getElementById('partner-preview');
+  if (!wrap) return;
+  const top = (window.PARTNERS || []).slice().sort((a, b) => b.rating - a.rating).slice(0, 4);
+  wrap.innerHTML = top.map(p => `
+    <a class="partner-mini" href="partners.html">
+      <div>
+        <b>${p.name}</b>
+        <span>${p.address} · ${p.specialty.slice(0, 2).join(', ')}</span>
+      </div>
+      <span class="pr">★ ${p.rating}</span>
     </a>
   `).join('');
 }
@@ -34,27 +72,19 @@ async function renderFeaturedReviews() {
   const wrap = document.getElementById('featured-reviews');
   if (!wrap) return;
   const pooled = [];
-  for (const c of (window.COURSES || [])) {
-    const revs = await ReviewStore.list(c.id);
-    revs.slice(0, 2).forEach(r => pooled.push({ ...r, courseTitle: c.title, courseId: c.id }));
+  for (const p of (window.PRODUCTS || [])) {
+    const revs = await ReviewStore.list(p.id);
+    revs.slice(0, 1).forEach(r => pooled.push({ ...r, productTitle: p.title, productId: p.id }));
   }
-  // 별점 높은 순 3개
   const pick = pooled.sort((a, b) => b.rating - a.rating).slice(0, 3);
+  if (!pick.length) { wrap.innerHTML = '<p class="muted">아직 후기가 없습니다.</p>'; return; }
   wrap.innerHTML = pick.map(r => `
     <div class="course-card" style="padding:22px;cursor:default">
       <div style="color:var(--warning);font-size:16px;margin-bottom:8px">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-      <p style="font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 14px">"${r.text}"</p>
+      <p style="font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 14px">"${escapeHtml(r.text)}"</p>
       <div style="font-size:13px;color:var(--muted)">
-        <b style="color:var(--ink)">${r.name}</b> · <a href="course.html?id=${r.courseId}" style="color:var(--brand);text-decoration:none">${r.courseTitle}</a>
+        <b style="color:var(--ink)">${escapeHtml(r.name)}</b> · <a href="product.html?id=${r.productId}" style="color:var(--brand);text-decoration:none">${escapeHtml(r.productTitle)}</a>
       </div>
     </div>
   `).join('');
-}
-
-function wireFaq() {
-  document.querySelectorAll('.faq-item').forEach(item => {
-    item.querySelector('.faq-q').addEventListener('click', () => {
-      item.classList.toggle('open');
-    });
-  });
 }

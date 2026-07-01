@@ -1,9 +1,11 @@
--- HiBuilder Course Marketplace · Supabase schema
+-- HiBuilder 건축 자사몰 · Supabase schema
+--   (orders/reviews 는 기존 결제 연동 유지를 위해 course_id 컬럼명을 그대로 사용하되,
+--    값으로는 상품 id 를 저장합니다. leads 는 상담·견적 신청용으로 새로 추가.)
 -- Supabase 프로젝트의 SQL Editor에서 이 파일을 한 번만 실행해 주세요.
 -- (이미 일부가 생성돼 있다면 안전하게 여러 번 실행 가능하도록 IF NOT EXISTS 사용)
 
 -- =====================================================
--- 1) 강의 리뷰
+-- 1) 상품 리뷰 (course_id 컬럼에 상품 id 저장)
 -- =====================================================
 create table if not exists public.reviews (
   id          bigserial primary key,
@@ -88,3 +90,38 @@ as $$
 $$;
 
 grant execute on function public.has_purchased(text, text) to anon, authenticated;
+
+-- =====================================================
+-- 5) 상담·견적 신청 (리드)
+--    · 주택모델 상담(kind='house'), 시공업체 매칭(kind='partner')
+-- =====================================================
+create table if not exists public.leads (
+  id          bigserial primary key,
+  kind        text        not null check (kind in ('house', 'partner')),
+  target_id   text,                                   -- 상품 id 또는 업체 id
+  target_name text,
+  name        text        not null check (char_length(name) between 1 and 40),
+  phone       text        not null check (char_length(phone) between 8 and 30),
+  region      text,
+  message     text        check (message is null or char_length(message) <= 2000),
+  status      text        not null default 'new',     -- new/contacted/contracted/closed
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists idx_leads_created on public.leads (created_at desc);
+create index if not exists idx_leads_kind    on public.leads (kind);
+
+alter table public.leads enable row level security;
+
+-- 리드: 익명 insert만 허용(status는 기본값 'new'로만). 조회는 서비스 롤만.
+drop policy if exists "leads_insert_anon" on public.leads;
+create policy "leads_insert_anon"
+  on public.leads for insert
+  with check (
+    status = 'new'
+    and kind in ('house', 'partner')
+    and char_length(name) between 1 and 40
+    and char_length(phone) between 8 and 30
+  );
+
+-- (의도적으로 leads 에 select 정책을 만들지 않음 → 익명 조회 불가)
