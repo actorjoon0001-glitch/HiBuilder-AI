@@ -23,11 +23,21 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
-# 정적 에셋은 길게 캐시
+# JS/CSS/데이터는 파일명에 해시가 없으므로 항상 재검증 (배포 후 즉시 반영)
 [[headers]]
-  for = "/assets/*"
+  for = "/assets/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=3600"
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 # 깔끔한 URL: /product/<id> → /product.html?id=<id>
 [[redirects]]
