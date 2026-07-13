@@ -3,19 +3,26 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="전국 검증된 시공 파트너를 지도에서 찾고 무료 상담을 신청하세요."/>
-  <title>전국 시공업체 · HiBuilder</title>
+  <meta name="description" content="체류형 쉼터를 설치할 수 있는 농지부터 주택 인허가가 가능한 대지까지, 전국 토지 매물을 지도에서 찾아보세요."/>
+  <meta name="robots" content="index, follow"/>
+  <title>전국 토지 매물 · HiBuilder</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
   <link rel="stylesheet" href="assets/css/styles.css"/>
+  <script src="assets/js/analytics-config.js" defer></script>
+  <script src="assets/js/analytics.js" defer></script>
 </head>
 <body>
   <div id="site-header"></div>
 
   <section class="partners-hero">
     <div class="container">
-      <h1>🗺️ 전국 시공업체</h1>
-      <p>지역별 검증된 시공 파트너를 지도에서 확인하고 무료 상담을 신청하세요. 시공 계약은 고객과 시공사가 직접 체결하며, 상담은 무료입니다.</p>
-      <div class="region-filter" id="region-filter"></div>
-      <a href="lands.html" class="ghost-link">전국 토지 매물 지도 보기 →</a>
+      <h1>🗺️ 전국 토지 매물</h1>
+      <p>체류형 쉼터를 놓을 수 있는 <b>농지</b>부터 주택 인허가가 가능한 <b>대지</b>까지, 전국 부지를 지도에서 찾아보세요. 매물 문의는 무료이며, 원하시면 이 땅에 맞는 주택 모델·시공사까지 연결해 드립니다.</p>
+      <div class="lands-filters">
+        <div class="region-filter" id="region-filter"></div>
+        <div class="cap-filter" id="cap-filter"></div>
+      </div>
+      <a href="partners.html" class="ghost-link">전국 시공업체 지도 보기 →</a>
     </div>
   </section>
 
@@ -25,15 +32,15 @@
         <div id="map"></div>
         <div id="map-fallback" class="map-fallback hide"></div>
       </div>
-      <div class="partners-list" id="partners-list"></div>
+      <div class="partners-list" id="lands-list"></div>
     </div>
   </main>
 
-  <!-- 상담 신청 모달 -->
+  <!-- 매물 문의 모달 -->
   <div class="modal-backdrop hide" id="lead-modal">
     <div class="modal">
       <button class="modal-close" id="modal-close">✕</button>
-      <h3 id="modal-title">시공 상담 신청</h3>
+      <h3 id="modal-title">토지 매물 문의</h3>
       <p class="muted" id="modal-sub" style="margin:0 0 16px"></p>
       <div class="form-group">
         <label for="m-name">이름</label>
@@ -45,9 +52,9 @@
       </div>
       <div class="form-group">
         <label for="m-message">문의 내용 (선택)</label>
-        <textarea id="m-message" placeholder="희망 지역, 예산, 시기 등을 적어주세요."></textarea>
+        <textarea id="m-message" placeholder="예산, 활용 계획(쉼터/주택), 희망 시기 등을 적어주세요."></textarea>
       </div>
-      <button class="btn btn-primary btn-lg" id="m-submit" style="width:100%">상담 신청하기</button>
+      <button class="btn btn-primary btn-lg" id="m-submit" style="width:100%">매물 문의하기</button>
       <p class="muted" style="font-size:12.5px;margin-top:10px">신청 시 <a href="privacy.html" target="_blank" style="color:var(--brand)">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.</p>
     </div>
   </div>
@@ -57,8 +64,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/kakao-config.js"></script>
-  <script src="data/partners.js"></script>
+  <script src="data/lands.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/partners.js"></script>
+  <script src="assets/js/lands.js"></script>
 </body>
 </html>

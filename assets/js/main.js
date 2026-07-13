@@ -41,6 +41,7 @@ const NAV_ITEMS = [
   { href: 'index.html#cat-house',     label: '주택모델' },
   { href: 'index.html#cat-material',  label: '건축자재' },
   { href: 'index.html#cat-appliance', label: '가전·가구' },
+  { href: 'lands.html',               label: '토지 매물' },
   { href: 'partners.html',            label: '전국 시공업체' },
   { href: 'index.html#how',           label: '이용방법' }
 ];
