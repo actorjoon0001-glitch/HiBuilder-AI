@@ -4,9 +4,42 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFooter();
   renderCatNav();
   renderCategoryGrids();
+  renderLandTeaser();
   renderPartnerPreview();
   renderFeaturedReviews();
 });
+
+function renderLandTeaser() {
+  const wrap = document.getElementById('land-teaser-grid');
+  if (!wrap) return;
+  const top = (window.LANDS || []).slice(0, 3);
+  wrap.innerHTML = top.map(l => {
+    const caps = [
+      l.canShelter ? '<span class="cap-badge shelter">체류형 쉼터 가능</span>' : '',
+      l.canHouse ? '<span class="cap-badge house">주택 인허가 가능</span>' : ''
+    ].join('');
+    return `
+    <a class="partner-card land-card" href="lands.html" style="text-decoration:none;color:inherit">
+      <div class="land-thumb" style="background-image:url('${l.thumbnail}')">
+        <span class="land-status ${l.status === '판매중' ? 'on' : ''}">${escapeHtml(l.status)}</span>
+      </div>
+      <div class="land-body">
+        <div class="pc-head">
+          <div>
+            <div class="pc-name">${escapeHtml(l.title)}</div>
+            <div class="pc-addr">${escapeHtml(l.address)}</div>
+          </div>
+          <span class="land-price">${fmtMoney(l.price)}</span>
+        </div>
+        <div class="land-specs">
+          <span>지목 ${escapeHtml(l.jimok)}</span>
+          <span>${FMT.format(l.areaPyeong)}평</span>
+        </div>
+        <div class="pc-tags">${caps}</div>
+      </div>
+    </a>`;
+  }).join('');
+}
 
 function productCard(p) {
   const isConsult = p.mode === 'consult';

@@ -97,7 +97,7 @@ grant execute on function public.has_purchased(text, text) to anon, authenticate
 -- =====================================================
 create table if not exists public.leads (
   id          bigserial primary key,
-  kind        text        not null check (kind in ('house', 'partner')),
+  kind        text        not null check (kind in ('house', 'partner', 'land')),
   target_id   text,                                   -- 상품 id 또는 업체 id
   target_name text,
   name        text        not null check (char_length(name) between 1 and 40),
@@ -119,7 +119,7 @@ create policy "leads_insert_anon"
   on public.leads for insert
   with check (
     status = 'new'
-    and kind in ('house', 'partner')
+    and kind in ('house', 'partner', 'land')
     and char_length(name) between 1 and 40
     and char_length(phone) between 8 and 30
   );
